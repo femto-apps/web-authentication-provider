@@ -1,0 +1,35 @@
+if messages.success && messages.success.length
+    blockquote
+        em= 'Success! ' + messages.success.join(', ')
+if messages.error && messages.error.length
+    blockquote
+        em= 'Error! ' + messages.error.join(', ')
+
+form(action='/login', method='post')
+
+    h3 Login
+
+    fieldset
+        input(type='hidden', name='goto', value=req.query.goto)
+
+        label(for='username') Username
+        input(type='text', name='username', placeholder='username' autocorrect='off', spellcheck='false', autocapitalize='off', autofocus='true')#username
+
+        label(for='password') Password
+        input(type='password', name='password')#password
+
+        input(type='submit', value='login').button-outline
+
+form(action='/register',  method='post')
+    h3 Register
+
+    fieldset
+        input(type='hidden', name='goto', value=req.query.goto)
+
+        label(for='username') Username
+        input(type='text', name='username', placeholder='username' autocorrect='off', spellcheck='false', autocapitalize='off', autofocus='true')#username
+
+        label(for='password') Password
+            input(type='password', name='password')#password
+
+        input(type='submit', value='register').button-outline

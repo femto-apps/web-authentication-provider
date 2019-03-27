@@ -17,8 +17,8 @@ const login = require('./modules/login')
     const app = express()
     const port = config.get('port')
 
-    const db = (await MongoClient.connect(config.get('mongoUri'), { useNewUrlParser: true })).db(config.get('dbName'))
-    mongoose.connect(config.get('mongoUri') + config.get('dbName'), { useNewUrlParser: true })
+    const db = (await MongoClient.connect(config.get('mongo.uri'), { useNewUrlParser: true })).db(config.get('mongo.db'))
+    mongoose.connect(config.get('mongo.uri') + config.get('mongo.db'), { useNewUrlParser: true })
 
     app.set('view engine', 'pug')
 
@@ -59,6 +59,8 @@ const login = require('./modules/login')
 
     app.get('/api/auth', login.isAuthenticated, foreign.getAuth)
     app.get('/api/verify', foreign.getVerify)
+
+    app.get('/admin', (req, res) => res.status(501))
 
     reload(app)
 

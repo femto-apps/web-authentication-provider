@@ -2,6 +2,7 @@ const { promisify } = require('util')
 const redis = require('redis')
 const uuidv4 = require('uuid/v4')
 const appendQuery = require('append-query')
+const config = require('@femto-apps/config')
 
 const Token = require('../models/Token')
 const services = require('../data/services')
@@ -43,7 +44,7 @@ exports.getAuth = async function(req, res) {
 
     await token.save()
 
-    await setAsync(`sessions:${tokenId}`, JSON.stringify({ users: [req.user] }))
+    await setAsync(`${config.get('redis.session')}:${tokenId}`, JSON.stringify({ users: [req.user] }))
 
     return res.redirect(appendQuery(redirect, 'token=' + encodeURIComponent(tokenId)))
 }

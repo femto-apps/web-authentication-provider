@@ -71,7 +71,6 @@ exports.postRegister = function(req, res, next) {
                 password: req.body.password
             })
 
-
             user.save().then(() => {
                 req.login(user, err => {
                     if (err) return next(err)

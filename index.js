@@ -31,8 +31,9 @@ const login = require('./modules/login')
         resave: false,
         saveUninitialized: false,
         store: new MongoStore({ db }),
+        name: 'provider',
         cookie: {
-            maxAge: config.get('cookie.maxAge')
+            maxAge: config.get('cookie.maxAge'),
         }
     }))
     app.use(flash())

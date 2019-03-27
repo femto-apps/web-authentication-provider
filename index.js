@@ -8,31 +8,31 @@ const mongoose = require('mongoose')
 const express = require('express')
 const morgan = require('morgan')
 const reload = require('reload')
-const path = require('path')
+const config = require('@femto-apps/config')
 
 const foreign = require('./modules/foreign')
 const login = require('./modules/login')
 
 ;(async () => {
     const app = express()
-    const port = 3001
+    const port = config.get('port')
 
-    const db = (await MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true })).db('simple_auth')
-    mongoose.connect('mongodb://localhost:27017/simple_auth', { useNewUrlParser: true })
+    const db = (await MongoClient.connect(config.get('mongoUri'), { useNewUrlParser: true })).db(config.get('dbName'))
+    mongoose.connect(config.get('mongoUri') + config.get('dbName'), { useNewUrlParser: true })
 
     app.set('view engine', 'pug')
 
     app.use(express.static('public'))
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
-    app.use(cookieParser(process.env.PG_SECRET || 'super_secret_123'))
+    app.use(cookieParser(config.get('cookie.secret') || 'super_secret_123'))
     app.use(expressSession({
-        secret: process.env.PG_SECRET || 'super_secret_123',
+        secret: config.get('session.secret') || 'super_secret_123',
         resave: false,
         saveUninitialized: false,
         store: new MongoStore({ db }),
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 7 * 4 // 28 days
+            maxAge: config.get('cookie.maxAge')
         }
     }))
     app.use(flash())

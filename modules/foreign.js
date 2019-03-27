@@ -1,8 +1,18 @@
+const { promisify } = require('util')
+const redis = require('redis')
 const uuidv4 = require('uuid/v4')
 const appendQuery = require('append-query')
 
 const Token = require('../models/Token')
 const services = require('../data/services')
+
+const client = redis.createClient()
+const setAsync = promisify(client.set).bind(client)
+
+client.on('error', err => {
+    console.log(`Received error: ${err}`)
+    process.exit(1)
+})
 
 // contains 'id', 'redirect'
 exports.getAuth = async function(req, res) {
@@ -32,6 +42,8 @@ exports.getAuth = async function(req, res) {
     })
 
     await token.save()
+
+    await setAsync(`sessions:${tokenId}`, JSON.stringify({ users: [req.user] }))
 
     return res.redirect(appendQuery(redirect, 'token=' + encodeURIComponent(tokenId)))
 }

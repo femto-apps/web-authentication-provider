@@ -5,8 +5,20 @@ const MongoStore = require('connect-mongo')(expressSession)
 const appendQuery = require('append-query')
 const passport = require('passport')
 const express = require('express')
+const { promisify } = require('util')
+const redis = require('redis')
+const config = require('@femto-apps/config')
 
 const User = require('../models/User')
+
+const client = redis.createClient()
+const delAsync = promisify(client.del).bind(client)
+
+client.on('error', err => {
+    console.log(`Received error: ${err}`)
+    process.exit(1)
+})
+
 
 function authenticateUser(req, username, password, done) {
     User
@@ -104,7 +116,14 @@ exports.postLogin = (req, res, next) => {
     })(req, res, next)
 }
 
-exports.getLogout = function(req, res) {
+exports.getLogout = async function(req, res) {
     req.logout()
-    res.redirect('/')
+
+    if ('tokens' in req.session) {
+        const tokens = req.session.tokens.map(token => `${config.get('redis.session')}:${token.token}`).join(' ')
+        await delAsync(tokens)
+        req.session.tokens = undefined
+    }
+
+    res.redirect(req.query.to || '/')
 }

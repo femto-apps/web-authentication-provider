@@ -42,6 +42,12 @@ exports.getAuth = async function(req, res) {
         user: req.user._id
     })
 
+    if ('tokens' in req.session) {
+        req.session.tokens.push({ token: tokenId, user: req.user._id})
+    } else {
+        req.session.tokens = [{ token: tokenId, user: req.user._id }]
+    }
+
     await token.save()
 
     await setAsync(`${config.get('redis.session')}:${tokenId}`, JSON.stringify({ users: [req.user] }))

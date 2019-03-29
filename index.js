@@ -12,6 +12,9 @@ const config = require('@femto-apps/config')
 
 const foreign = require('./modules/foreign')
 const login = require('./modules/login')
+const consumers = require('./consumers/addConsumer')
+
+const Consumer = require('./models/Consumer')
 
 ;(async () => {
     const app = express()
@@ -55,14 +58,19 @@ const login = require('./modules/login')
     app.get('/logout', login.getLogout)
 
     app.post('/login', login.postLogin)
-    app.post('/register',  login.postRegister)
+    app.post('/register', login.postRegister)
 
     app.get('/api/auth', login.isAuthenticated, foreign.getAuth)
     app.get('/api/verify', foreign.getVerify)
 
-    app.get('/admin', (req, res) => res.status(501))
+    app.get('/admin', (req, res) => res.sendStatus(501))
+
+    //app.get('/admin/listconsumers', (req, res) => res.json(Consumer.find()))
+    app.get('/admin/listconsumers', (req, res) => res.sendStatus(501))
+    app.get('/admin/addconsumer', (req, res) => res.render('addConsumer'))
+    app.post('/admin/addconsumer', consumers.add)
 
     reload(app)
 
-    app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+    app.listen(port, () => console.log(`Example app listening on port ${port}`))
 })()

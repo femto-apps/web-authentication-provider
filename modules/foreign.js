@@ -3,9 +3,10 @@ const redis = require('redis')
 const uuidv4 = require('uuid/v4')
 const appendQuery = require('append-query')
 const config = require('@femto-apps/config')
+const normUrl = require('normalize-url')
 
 const Token = require('../models/Token')
-const services = require('../data/services')
+const services = require('../consumers/getConsumer')
 
 const client = redis.createClient()
 const setAsync = promisify(client.set).bind(client)
@@ -19,18 +20,22 @@ client.on('error', err => {
 exports.getAuth = async function(req, res) {
     const { id, redirect } = req.query
 
-    if (!(id in services)) {
+    let consumer = await services.getConsumer(id)
+    console.log(consumer)
+    if (!(consumer)) {
         return res.json({ err: 'Invalid ID' })
     }
 
+    let redirects = services.getRedirects(consumer)
     let url
     try {
         url = new URL(redirect)
     } catch(e) {
-        return res.json({ err: 'Unacceptable Redirect' })
+        return res.json({ err: 'Cannot Parse Redirect URL' })
     }
     
-    if (!services[id].redirects.find(redirect => redirect === url.origin )) {
+    let origUrl = normUrl(url.origin)
+    if (redirects.indexOf(origUrl) == -1) {
         return res.json({ err: 'Unacceptable Redirect' })
     }
 

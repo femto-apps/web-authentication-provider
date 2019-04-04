@@ -1,0 +1,26 @@
+extends ../templates/base.pug
+block title
+    | Add Consumer
+block wrapper
+    main
+        if messages.success && messages.success.length
+            blockquote
+                em= 'Success! ' + messages.success.join(', ')
+        if messages.error && messages.error.length
+            blockquote
+                em= 'Error! ' + messages.error.join(', ')
+        if consumers
+        	table
+        		caption Consumers
+        		thead
+        			tr
+        				th Name
+        				th Description
+        				th Redirects
+        		tbody
+        			each val, index in consumers
+        				tr
+        					td= val.name
+        					td= val.description
+        					td= JSON.stringify(val.redirects)
+        					

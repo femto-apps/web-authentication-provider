@@ -13,6 +13,7 @@ const config = require('@femto-apps/config')
 const foreign = require('./modules/foreign')
 const login = require('./modules/login')
 const consumers = require('./consumers/addConsumer')
+const services = require('./consumers/getConsumer')
 
 const Consumer = require('./models/Consumer')
 
@@ -65,8 +66,7 @@ const Consumer = require('./models/Consumer')
 
     app.get('/admin', (req, res) => res.sendStatus(501))
 
-    //app.get('/admin/listconsumers', (req, res) => res.json(Consumer.find()))
-    app.get('/admin/listconsumers', (req, res) => res.sendStatus(501))
+    app.get('/admin/listconsumers', services.listConsumers)
     app.get('/admin/addconsumer', (req, res) => res.render('addConsumer'))
     app.post('/admin/addconsumer', consumers.add)
 

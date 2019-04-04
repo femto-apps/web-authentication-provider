@@ -13,6 +13,16 @@ exports.getRedirects = function(consumer) {
 	return services
 }
 
+exports.listConsumers = async function(req, res) {
+	Consumer.find().then((consumers) => {
+		res.locals.consumers = consumers
+		res.render('listConsumers.pug')
+	}).catch((err) => {
+		req.flash('error', 'The "consumers" collection could not be searched')
+		res.redirect('/')
+	})
+}
+
 
 /*
 module.exports = {

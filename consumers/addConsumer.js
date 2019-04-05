@@ -1,3 +1,5 @@
+const uuidv4 = require('uuid/v4')
+
 const Consumer = require('../models/Consumer')
 
 exports.add = function(req, res, next) {
@@ -7,17 +9,19 @@ exports.add = function(req, res, next) {
             return res.redirect(req.originalUrl)
 		}
 
+		let consumerId = uuidv4()
 		let consumer = new Consumer({
+			uuid: consumerId, 
 			name: req.body.name,
 			description: req.body.description, 
 			redirects: req.body.redirects.split(',')
 		})
 
 		consumer.save().then(() => {
-			req.flash('success', 'Consumer made successfully')
+			req.flash('success', `Consumer ${consumerId} made successfully`)
 			return res.redirect('/')
 		}).catch((err) => {
-			req.flash('error', 'Consumer could not be saved')
+			req.flash('error', `Consumer ${consumerId} could not be saved`)
 			return res.redirect('/')
 		})
 	}).catch((err) => {

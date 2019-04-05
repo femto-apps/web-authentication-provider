@@ -2,6 +2,8 @@ extends ../templates/base.pug
 block title
     | Add Consumer
 block wrapper
+    header
+        h1 Authentication Provider: List Consumers 
     main
         if messages.success && messages.success.length
             blockquote
@@ -10,17 +12,19 @@ block wrapper
             blockquote
                 em= 'Error! ' + messages.error.join(', ')
         if consumers
-        	table
-        		caption Consumers
-        		thead
-        			tr
-        				th Name
-        				th Description
-        				th Redirects
-        		tbody
-        			each val, index in consumers
-        				tr
-        					td= val.name
-        					td= val.description
-        					td= JSON.stringify(val.redirects)
-        					
+            table
+                caption Consumers
+                thead
+                    tr
+                        th Name
+                        th UUID
+                        th Description
+                        th Redirects
+                tbody
+                    each val, index in consumers
+                        tr
+                            td= val.name
+                            td= val.uuid
+                            td= val.description
+                            td= JSON.stringify(val.redirects)
+                            

@@ -2,6 +2,8 @@ extends ../templates/base.pug
 block title
     | Login/Register
 block wrapper
+    header
+        h1 Authentication Provider: Login/Register 
     main
         if messages.success && messages.success.length
             blockquote

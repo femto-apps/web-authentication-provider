@@ -23,6 +23,7 @@ const Consumer = require('./models/Consumer')
 
     const db = (await MongoClient.connect(config.get('mongo.uri'), { useNewUrlParser: true })).db(config.get('mongo.db'))
     mongoose.connect(config.get('mongo.uri') + config.get('mongo.db'), { useNewUrlParser: true })
+    mongoose.set("useCreateIndex", true)
 
     app.set('view engine', 'pug')
 
@@ -35,7 +36,7 @@ const Consumer = require('./models/Consumer')
         resave: false,
         saveUninitialized: false,
         store: new MongoStore({ db }),
-        name: 'provider',
+        name: config.get('cookie.name'),
         cookie: {
             maxAge: config.get('cookie.maxAge'),
         }

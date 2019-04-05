@@ -2,7 +2,7 @@ const Consumer = require('../models/Consumer')
 const normUrl = require('normalize-url')
 
 exports.getConsumer = async function(consumerId) {
-	return Consumer.findOne({_id: consumerId})
+	return Consumer.findOne({uuid: consumerId})
 }
 
 exports.getRedirects = function(consumer) {
@@ -24,15 +24,7 @@ exports.listConsumers = async function(req, res) {
 }
 
 
-/*
-module.exports = {
-    '100': {
-        redirects: [
-            'http://localhost:3002'
-        ]
-    }
-}
-*/
+
 
 
 

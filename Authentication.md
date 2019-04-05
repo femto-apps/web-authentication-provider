@@ -1,31 +1,28 @@
-MultiUser OAuth
-
+# MultiUser OAuth Description 
+## Endpoints 
 /login -
-  user page to register / login to an account that they own.
-  they can see the list of existing accounts they're logged into.
-  click on an existing account to switch on it, or click a 'manage' button.
+  - User page to register / login to an account that they own.
+  - They can see the list of existing accounts they're logged into.
+  - Click on an existing account to switch on it, or click a 'manage' button.
 
 /api/v1/verify?token=<token>
-  gets the current user, as well as all other users this person is logged in as.
+  - Gets the current user, as well as all other users this person is logged in as.
 
-/api/v1/logout?user=user
-  logs the current user out of the specified user account.
+/logout?user=user
+  - Logs the current user out of the specified user account.
 
 /token?token=<token> 
-  returns a user from a token, e.g. User { email: ..., name: ... }
+  - Returns a user from a token, e.g. User { email: ..., name: ... }
 
-== Diagram ==
+## Diagram 
 redis <-> token service <-> consumer
   ^
 provider <-> consumer
 
-== PART LIST ==
+## Parts List
 user
-consumer
+consumer (lib-consumer)
 provider
 token service
 
-== TODO LIST ==
-- token service that translates from token to session
-- update provider to write session data to Redis
-- add consumer service that calls token service and updates request object
+

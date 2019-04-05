@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 
 const ConsumerSchema = mongoose.Schema({
-	name: {type: String, required: true, index: { unique: true }},
+	uuid: {type: String, required: true, unique: true},
+	name: {type: String, required: true, unique: true },
 	description: {type: String, required: false},
 	redirects: {type: [String], required: true}
 }, {

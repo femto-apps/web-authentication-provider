@@ -9,7 +9,7 @@
 #### Desired
 - Realm support
 - Multiple users at once logged in
-- A library to make consumers less painful to create
+- (DONE) A library to make consumers less painful to create
 - Storing other details about users
 
 

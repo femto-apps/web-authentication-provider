@@ -1,0 +1,28 @@
+extends ../templates/base.pug
+block title
+    | Add Consumer
+block wrapper
+    header
+        h1 Authentication Provider: Add Consumer 
+    main
+        if messages.success && messages.success.length
+            blockquote
+                em= 'Success! ' + messages.success.join(', ')
+        if messages.error && messages.error.length
+            blockquote
+                em= 'Error! ' + messages.error.join(', ')
+        form(action='/admin/addconsumer', method='post')
+
+            h3 Add Consumer
+
+            fieldset
+                label(for='name') Name
+                input(type='text', name='name', placeholder='name' autocorrect='off', spellcheck='false', autocapitalize='off', autofocus='true')#name
+
+                label(for='description') Description 
+                input(type='text', name='description', placeholder='description' autocorrect='off', spellcheck='false', autocapitalize='off', autofocus='true')#description
+
+                label(for='redirects') Redirects
+                input(type='text', name='redirects', placeholder='redirects' autocorrect='off', spellcheck='false', autocapitalize='off', autofocus='true')#redirects
+
+                input(type='submit', value='Submit').button-outline

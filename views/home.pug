@@ -1,4 +1,17 @@
-if req.user
-    p Hello #{req.user.username}.  You are currently logged in.  Would you like to #[a(href='/logout') logout]?
-else
-    p Hello anonymous.  You are currently logged out.  Would you like to #[a(href='/login') login] or #[a(href='/register') register]?
+extends ../templates/base.pug
+block title
+    | Home
+block wrapper
+    header
+        h1 Authentication Provider: Home
+    main
+        if messages.success && messages.success.length
+            blockquote
+                em= 'Success! ' + messages.success.join(', ')
+        if messages.error && messages.error.length
+            blockquote
+                em= 'Error! ' + messages.error.join(', ')
+        if req.user
+            p Hello #{req.user.username}.  You are currently logged in.  Would you like to #[a(href='/logout') logout]?
+        else
+            p Hello anonymous.  You are currently logged out.  Would you like to #[a(href='/login') login] or #[a(href='/register') register]?

@@ -16,7 +16,7 @@ exports.getRedirects = function(consumer) {
 exports.listConsumers = async function(req, res) {
 	Consumer.find().then((consumers) => {
 		res.locals.consumers = consumers
-		res.render('listConsumers.pug')
+		res.render('listConsumers')
 	}).catch((err) => {
 		req.flash('error', 'The "consumers" collection could not be searched')
 		res.redirect('/')

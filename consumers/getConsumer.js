@@ -5,6 +5,10 @@ exports.getConsumer = async function(consumerId) {
 	return Consumer.findOne({uuid: consumerId})
 }
 
+exports.getConsumers = async function() {
+	return Consumer.find(); 
+}
+
 exports.getRedirects = function(consumer) {
 	services = []
 	for (let i = 0; i < consumer.redirects.length; i++) {

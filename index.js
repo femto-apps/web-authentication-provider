@@ -62,8 +62,10 @@ const Consumer = require('./models/Consumer')
     app.post('/login', login.postLogin)
     app.post('/register', login.postRegister)
 
-    app.get('/api/auth', login.isAuthenticated, foreign.getAuth)
-    app.get('/api/verify', foreign.getVerify)
+    app.get('/api/auth', (req, res) => res.redirect('/api/v1/auth'))
+    app.get('/api/verify', (req, res) => res.redirect('/api/v1/verify'))
+    app.get('/api/v1/auth', login.isAuthenticated, foreign.getAuth)
+    app.get('/api/v1/verify', foreign.getVerify)
 
     app.get('/admin', (req, res) => res.sendStatus(501))
 

@@ -10,6 +10,7 @@ const redis = require('redis')
 const config = require('@femto-apps/config')
 
 const User = require('../models/User')
+const consumers = require('../consumers/getConsumer')
 
 const client = redis.createClient()
 const delAsync = promisify(client.del).bind(client)

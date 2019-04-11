@@ -21,9 +21,9 @@ redis <-> token service <-> consumer
 provider <-> consumer
 
 ## Parts List
-user
-consumer (lib-consumer)
-provider
-token service
+- User
+- Consumer (lib-authentication-consumer + web-authentication-consumer)
+- Provider (web-authentication-provider)
+- Token Service (web-authentication-token-service)
 
 

@@ -4,7 +4,10 @@ const ConsumerSchema = mongoose.Schema({
 	uuid: {type: String, required: true, unique: true},
 	name: {type: String, required: true, unique: true },
 	description: {type: String, required: false},
-	redirects: {type: [String], required: true}
+	redirects: {type: [String], required: true},
+	authorisation: {
+		permissions: { type: [String], required: false },
+	}
 }, {
 	timestamps: true,
     strict: true	

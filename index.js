@@ -12,10 +12,11 @@ const config = require('@femto-apps/config')
 
 const foreign = require('./modules/foreign')
 const login = require('./modules/login')
-const consumers = require('./consumers/addConsumer')
-const services = require('./consumers/getConsumer')
 
-const Consumer = require('./models/Consumer')
+const consumerServices = require('./services/consumer')
+
+const consumerHandler = require('./handlers/consumer')
+
 
 ;(async () => {
     const app = express()
@@ -62,6 +63,18 @@ const Consumer = require('./models/Consumer')
     app.post('/login', login.postLogin)
     app.post('/register', login.postRegister)
 
+    app.get('/api/consumer', consumerHandler.getConsumers)
+    app.get('/api/consumer/:consumerId', consumerHandler.getConsumer)
+    app.post('/api/consumer', consumerHandler.postConsumer)
+    app.put('/api/consumer/:consumerId', consumerHandler.putConsumer)
+    app.delete('/api/consumer/:consumerId', consumerHandler.deleteConsumer)
+
+    app.get('/consumers', async (req, res) => {
+        res.render('consumers', {
+            consumers: await consumerServices.readConsumers()
+        })
+    })
+
     app.get('/api/auth', (req, res) => res.redirect('/api/v1/auth'))
     app.get('/api/verify', (req, res) => res.redirect('/api/v1/verify'))
     app.get('/api/v1/auth', login.isAuthenticated, foreign.getAuth)
@@ -69,9 +82,7 @@ const Consumer = require('./models/Consumer')
 
     app.get('/admin', (req, res) => res.sendStatus(501))
 
-    app.get('/admin/listconsumers', services.listConsumers)
-    app.get('/admin/addconsumer', (req, res) => res.render('addConsumer'))
-    app.post('/admin/addconsumer', consumers.add)
+
 
     reload(app)
 

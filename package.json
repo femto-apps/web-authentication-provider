@@ -12,6 +12,9 @@
   "license": "MIT",
   "dependencies": {
     "@femto-apps/config": "^1.0.0",
+    "@femto-apps/errors": "^2.0.0",
+    "@femto-apps/normaliser": "^1.0.0",
+    "@femto-apps/verify": "^1.0.3",
     "append-query": "^2.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",

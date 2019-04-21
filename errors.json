@@ -1,0 +1,10 @@
+{
+    "ERR_CONSUMER_SAVE": {
+        "msg": "Unable to save the new consumer ({consumerId}) to the database.",
+        "code": 500
+    },
+    "ERR_CONSUMER_FIND": {
+        "msg": "Unable to find the consumer '{consumerId}'.",
+        "code": 400
+    }
+}

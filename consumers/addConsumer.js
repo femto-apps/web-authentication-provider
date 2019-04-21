@@ -10,11 +10,17 @@ exports.add = function(req, res, next) {
 		}
 
 		let consumerId = uuidv4()
+
 		let consumer = new Consumer({
 			uuid: consumerId, 
 			name: req.body.name,
 			description: req.body.description, 
-			redirects: req.body.redirects.split(',')
+			redirects: req.body.redirects.split(','),
+			authorisation: {
+				permissions: [
+					'*'
+				]
+			}
 		})
 
 		consumer.save().then(() => {

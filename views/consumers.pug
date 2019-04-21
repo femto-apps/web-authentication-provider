@@ -1,0 +1,23 @@
+extends components/base
+
+block main
+    section
+        h3 Consumers
+
+    section
+        table
+            thead
+                tr
+                    th Name
+                    th Description
+                    th Redirects
+                    th UUID
+                    th Created At
+            tbody
+                for consumer in consumers
+                    tr
+                        td= consumer.name
+                        td= consumer.description
+                        td= consumer.redirects.join(',')
+                        td= `${consumer.uuid.substring(0, 4)}...${consumer.uuid.slice(-4)}`
+                        td= consumer.createdAt

@@ -1,0 +1,56 @@
+const uuidv4 = require('uuid/v4')
+const Errors = require('@femto-apps/errors')('../errors.json')
+
+const Consumer = require('../models/Consumer')
+
+async function createConsumer(name, description, redirects, authorisation) {
+    const consumerId = uuidv4()
+
+    const consumer = new Consumer({
+        uuid: consumerId,
+        name, description, redirects, authorisation
+    })
+
+    await consumer
+        .save()
+        .catch(err => {
+            throw Errors('ERR_CONSUMER_SAVE', { consumerId, err })
+        })
+
+    return {
+        consumerId
+    }
+}
+
+async function readConsumer(consumerId) {
+    const consumer = await Consumer.findOne({ uuid: consumerId })
+        .catch(err => {
+            throw Errors('ERR_CONSUMER_FIND', { consumerId, err })
+        })
+
+    return consumer
+}
+
+function readConsumers() {
+    return Consumer.find({})
+}
+
+function updateConsumer(consumerId, name, description, redirects, { /* authorisation */ }) {
+    return Consumer.updateOne({
+        uuid: consumerId
+    }, {
+        $set: { name, description, redirects }
+    })
+}
+
+function deleteConsumer(consumerId) {
+    return Consumer.remove({ uuid: consumerId })
+}
+
+module.exports = {
+    createConsumer,
+    readConsumer,
+    readConsumers,
+    updateConsumer,
+    deleteConsumer
+}

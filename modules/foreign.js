@@ -5,7 +5,6 @@ const appendQuery = require('append-query')
 const config = require('@femto-apps/config')
 const normUrl = require('normalize-url')
 
-const Token = require('../models/Token')
 const services = require('../consumers/getConsumer')
 
 const client = redis.createClient()
@@ -41,11 +40,6 @@ exports.getAuth = async function(req, res) {
 
     // generate a new token.
     const tokenId = uuidv4()
-    
-    const token = new Token({
-        token: tokenId,
-        user: req.user._id
-    })
 
     if ('tokens' in req.session) {
         req.session.tokens.push({ token: tokenId, user: req.user._id})
@@ -53,23 +47,8 @@ exports.getAuth = async function(req, res) {
         req.session.tokens = [{ token: tokenId, user: req.user._id }]
     }
 
-    await token.save()
-
     await setAsync(`${config.get('redis.session')}:${tokenId}`, JSON.stringify({ users: [req.user] }))
 
     return res.redirect(appendQuery(redirect, 'token=' + encodeURIComponent(tokenId)))
 }
 
-exports.getVerify = async function(req, res) {
-    const tokenId = req.query.token
-
-    const token = await Token.findOne({ token: tokenId }).populate('user')
-
-    if (!token) {
-        return res.json({
-            err: 'Unknown Token'
-        })
-    }
-
-    return res.json(token.user)
-}

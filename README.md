@@ -19,4 +19,4 @@ This project also encompasses:
 To run this project, install nodemon and then use the command `npm run nodemon`. A mongodb instance and a redis instance must also be running. 
 
 See (Authentication.md)[Authentication.md "Authentication.md"] for details on how this works. \
-See (To-do.md)[TO-do.md "To-do.md"] for the list of hopefully upcoming features. 
+See (To-do.md)[To-do.md "To-do.md"] for the list of hopefully upcoming features. 

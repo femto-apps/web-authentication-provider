@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const express = require('express')
 const morgan = require('morgan')
 const reload = require('reload')
+const favicon = require('serve-favicon')
 const config = require('@femto-apps/config')
 
 const foreign = require('./modules/foreign')
@@ -53,7 +54,16 @@ const consumerHandler = require('./handlers/consumer')
         res.locals.path = req.path
         next()
     })
+
     app.use(morgan('dev'))
+
+    app.use(favicon(config.get('favicon')))
+
+    app.all('/api/v1', (req, res) => res.json("This is the version 1 API route"))
+    app.all('/api/v1*', (req, res, next) => {
+        console.log(req.path.split('/').splice(0, 3))
+        res.redirect('/api/' + req.path.split('/').slice(3, req.path.length).join('/'))
+    })
 
     app.get('/', (req, res) => res.render('home'))
     app.get('/login', (req, res) => res.render('login'))
@@ -75,10 +85,7 @@ const consumerHandler = require('./handlers/consumer')
         })
     })
 
-    app.get('/api/auth', (req, res) => res.redirect('/api/v1/auth'))
-    app.get('/api/verify', (req, res) => res.redirect('/api/v1/verify'))
-    app.get('/api/v1/auth', login.isAuthenticated, foreign.getAuth)
-    app.get('/api/v1/verify', foreign.getVerify)
+    app.get('/api/auth', login.isAuthenticated, foreign.getAuth)
 
     app.get('/admin', (req, res) => res.sendStatus(501))
 

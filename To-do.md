@@ -3,9 +3,9 @@
 ## Required
 - Two factor authentication
 - Altering account details
-- Role of mongodb vs redis
 - Documentation 
-- Login redirects 
+- Login redirects
+- Authorisation server integration 
 
 
 ## Desired

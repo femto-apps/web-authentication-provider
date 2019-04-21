@@ -14,5 +14,6 @@ module.exports = {
   },
   session: {
     secret: 'adstfygjgnfAESRTDYFVB435ryuthf£$%RE;;:'
-  }
+  },
+  favicon: 'public/images/favicon/favicon.ico'
 }

@@ -1,16 +1,16 @@
-extends ./base
-block title
-    | Home
-block wrapper
-    header
-        h1 Authentication Provider: Home
-    main
-        if messages.success && messages.success.length
-            blockquote
-                em= 'Success! ' + messages.success.join(', ')
-        if messages.error && messages.error.length
-            blockquote
-                em= 'Error! ' + messages.error.join(', ')
+extends components/base
+
+include components/flash
+
+block main
+    section
+        h3 Home
+
+    section
+        +flash()
+
+
+
         if req.user
             p Hello #{req.user.username}.  You are currently logged in.  Would you like to #[a(href='/logout') logout]?
         else

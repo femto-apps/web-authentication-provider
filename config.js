@@ -15,5 +15,8 @@ module.exports = {
   session: {
     secret: 'adstfygjgnfAESRTDYFVB435ryuthf£$%RE;;:'
   },
+  title: {
+    suffix: 'Femto Authentication Provider'
+  },
   favicon: 'public/images/favicon/favicon.ico'
 }

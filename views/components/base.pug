@@ -2,21 +2,22 @@ include ./nav
 
 doctype html
 html(lang='en')
-  head
-    meta(charset='utf-8')
-    title A Blank Page
-    meta(name='description', content='Example Site Description')
-    meta(name='author', content='Femto Apps')
-    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic')
-    link(rel='stylesheet', href='/css/femto.css')
+    head
+        meta(charset='utf-8')
+        title= page.title
+        meta(name='description', content='Example Site Description')
+        meta(name='author', content='Femto Apps')
+        link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic')
+        link(rel='stylesheet', href='/css/femto.css')
 
-  body
-    +nav('Authentication Provider', [{ title: 'Example', href: '/' }, { title: 'Example', href: '/' }])
+    body
+        container
+            +nav(nav.title, nav.links)
 
-    main
-        block main
+            main
+                block main
 
-    footer
-      section
-        | This is some example footer content. You can make it really long and see what happens, because I don't quite
-        | know what will happen if it is really long.
+            footer
+                section
+                    | This is some example footer content. You can make it really long and see what happens, because I don't quite
+                    | know what will happen if it is really long.

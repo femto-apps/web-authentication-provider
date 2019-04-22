@@ -5,7 +5,7 @@ const appendQuery = require('append-query')
 const config = require('@femto-apps/config')
 const normUrl = require('normalize-url')
 
-const services = require('../consumers/getConsumer')
+const consumerService = require('../services/consumer')
 
 const client = redis.createClient()
 const setAsync = promisify(client.set).bind(client)
@@ -19,13 +19,13 @@ client.on('error', err => {
 exports.getAuth = async function(req, res) {
     const { id, redirect } = req.query
 
-    let consumer = await services.getConsumer(id)
+    let consumer = await consumerService.readConsumer(id)
     console.log(consumer)
     if (!(consumer)) {
         return res.json({ err: 'Invalid ID' })
     }
 
-    let redirects = services.getRedirects(consumer)
+    let redirects = consumer.redirects
     let url
     try {
         url = new URL(redirect)

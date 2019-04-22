@@ -59,6 +59,24 @@ const consumerHandler = require('./handlers/consumer')
 
     app.use(favicon(config.get('favicon')))
 
+    app.use((req, res, next) => {
+        const links = []
+
+        if (req.user) {
+            links.push({ title: 'Logout', href: '/logout' })
+        } else {
+            links.push({ title: 'Register', href: '/register' })
+            links.push({ title: 'Login', href: '/login' })
+        }
+
+        res.locals.nav = {
+            title: 'Authentication Provider',
+            links
+        }
+
+        next()
+    })
+
     app.all('/api/v1', (req, res) => res.json("This is the version 1 API route"))
     app.all('/api/v1*', (req, res, next) => {
         console.log(req.path.split('/').splice(0, 3))
@@ -81,6 +99,7 @@ const consumerHandler = require('./handlers/consumer')
 
     app.get('/consumers', async (req, res) => {
         res.render('consumers', {
+            page: { title: `Consumer List :: ${config.get('title.suffix')}` },
             consumers: await consumerServices.readConsumers()
         })
     })
@@ -88,8 +107,6 @@ const consumerHandler = require('./handlers/consumer')
     app.get('/api/auth', login.isAuthenticated, foreign.getAuth)
 
     app.get('/admin', (req, res) => res.sendStatus(501))
-
-
 
     reload(app)
 

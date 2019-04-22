@@ -85,6 +85,7 @@ const consumerHandler = require('./handlers/consumer')
 
     app.post('/register', login.postRegister)
     app.post('/login', login.postLogin)
+    app.post('/logout', login.postLogout)
     app.get('/logout', login.getLogout)
 
     app.get('/api/consumer', consumerHandler.getConsumers)

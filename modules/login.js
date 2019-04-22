@@ -116,7 +116,7 @@ exports.postLogin = (req, res, next) => {
     })(req, res, next)
 }
 
-exports.getLogout = async function(req, res) {
+async function logout(req, res, to) {
     req.logout()
 
     if ('tokens' in req.session) {
@@ -125,5 +125,13 @@ exports.getLogout = async function(req, res) {
         req.session.tokens = undefined
     }
 
-    res.redirect(req.query.to || '/')
+    res.redirect(to || '/')
+}
+
+exports.getLogout = async function(req, res) {
+    logout(req, res, req.query.to || '/')
+}
+
+exports.postLogout = async function(req, res) {
+    logout(req, res, req.body.to || '/')
 }

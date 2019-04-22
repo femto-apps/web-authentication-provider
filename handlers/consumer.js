@@ -16,6 +16,25 @@ async function getConsumer(req, res) {
     return res.json(consumer)
 }
 
+async function getConsumerBySecret(req, res) {
+    const { consumer, secret } = req.params
+
+    let path
+    if (consumer === 'authorisation') {
+        path = 'authorisation.secret'
+    } else {
+        return res.status(404).json({
+            error: `Couldn't find a consumer called ${consumer}`
+        })
+    }
+
+    const item = await consumerService.readConsumerBySecret(path, secret)
+
+    return res.json({
+        consumer: item
+    })
+}
+
 async function getConsumers(req, res) {
     const consumers = await consumerService.readConsumers()
 
@@ -33,9 +52,9 @@ async function postConsumer(req, res) {
     }
 
     consumerService.createConsumer(name, description, redirects, { /* authorisation */ })
-        .then(({ consumerId }) => {
+        .then(({ consumer }) => {
             return res.json({
-                consumerId
+                consumer
             })
         })
         .catch(err => {
@@ -72,6 +91,7 @@ async function deleteConsumer(req, res) {
 
 module.exports = {
     getConsumer,
+    getConsumerBySecret,
     getConsumers,
     postConsumer,
     putConsumer,

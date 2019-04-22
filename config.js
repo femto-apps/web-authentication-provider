@@ -18,5 +18,5 @@ module.exports = {
   title: {
     suffix: 'Femto Authentication Provider'
   },
-  favicon: 'public/images/favicon/favicon.ico'
+  favicon: 'public/images/favicon/favicon.ico',
 }

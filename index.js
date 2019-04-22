@@ -83,9 +83,12 @@ const consumerHandler = require('./handlers/consumer')
         res.redirect('/api/' + req.path.split('/').slice(3, req.path.length).join('/'))
     })
 
+    app.post('/register', login.postRegister)
+    app.post('/login', login.postLogin)
     app.get('/logout', login.getLogout)
 
     app.get('/api/consumer', consumerHandler.getConsumers)
+    app.get('/api/consumerBySecret/:consumer/:secret', consumerHandler.getConsumerBySecret)
     app.get('/api/consumer/:consumerId', consumerHandler.getConsumer)
     app.post('/api/consumer', consumerHandler.postConsumer)
     app.put('/api/consumer/:consumerId', consumerHandler.putConsumer)

@@ -6,5 +6,9 @@
     "ERR_CONSUMER_FIND": {
         "msg": "Unable to find the consumer '{consumerId}'.",
         "code": 400
+    },
+    "ERR_CONSUMER_SECRET_FIND": {
+        "msg": "Unable to find any consumers with secret '{secret}' at path '{path}'",
+        "code": 400
     }
 }

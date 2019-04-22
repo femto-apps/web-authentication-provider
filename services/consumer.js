@@ -6,6 +6,9 @@ const Consumer = require('../models/Consumer')
 async function createConsumer(name, description, redirects, authorisation) {
     const consumerId = uuidv4()
 
+    if (typeof authorisation === 'undefined') authorisation = {}
+    if (typeof authorisation.secret === 'undefined') authorisation.secret = uuidv4()
+
     const consumer = new Consumer({
         uuid: consumerId,
         name, description, redirects, authorisation
@@ -18,7 +21,7 @@ async function createConsumer(name, description, redirects, authorisation) {
         })
 
     return {
-        consumerId
+        consumer
     }
 }
 
@@ -26,6 +29,15 @@ async function readConsumer(consumerId) {
     const consumer = await Consumer.findOne({ uuid: consumerId })
         .catch(err => {
             throw Errors('ERR_CONSUMER_FIND', { consumerId, err })
+        })
+
+    return consumer
+}
+
+async function readConsumerBySecret(path, secret) {
+    const consumer = await Consumer.findOne({ [path]: secret })
+        .catch(err => {
+            throw Errors('ERR_CONSUMER_SECRET_FIND', { path, secret, err })
         })
 
     return consumer
@@ -50,6 +62,7 @@ function deleteConsumer(consumerId) {
 module.exports = {
     createConsumer,
     readConsumer,
+    readConsumerBySecret,
     readConsumers,
     updateConsumer,
     deleteConsumer

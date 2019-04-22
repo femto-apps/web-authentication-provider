@@ -7,6 +7,7 @@ const ConsumerSchema = mongoose.Schema({
 	redirects: {type: [String], required: true},
 	authorisation: {
 		permissions: { type: [String], required: false },
+		secret: { type: String }
 	}
 }, {
 	timestamps: true,

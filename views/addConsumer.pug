@@ -1,17 +1,12 @@
-extends ./base
-block title
-    | Add Consumer
-block wrapper
-    header
-        h1 Authentication Provider: Add Consumer 
-    main
-        if messages.success && messages.success.length
-            blockquote
-                em= 'Success! ' + messages.success.join(', ')
-        if messages.error && messages.error.length
-            blockquote
-                em= 'Error! ' + messages.error.join(', ')
-        form(action='/admin/addconsumer', method='post')
+extends components/base
+
+include components/flash
+
+block main
+    +flash()
+
+    section
+        form(action='/api/consumer', method='post')
 
             h3 Add Consumer
 

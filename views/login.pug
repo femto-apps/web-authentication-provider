@@ -1,17 +1,11 @@
-extends ./base
-block title
-    | Login/Register
-block wrapper
-    header
-        h1 Authentication Provider: Login/Register 
-    main
-        if messages.success && messages.success.length
-            blockquote
-                em= 'Success! ' + messages.success.join(', ')
-        if messages.error && messages.error.length
-            blockquote
-                em= 'Error! ' + messages.error.join(', ')
+extends components/base
 
+include components/flash
+
+block main
+    +flash()
+
+    section
         form(action='/login', method='post')
 
             h3 Login

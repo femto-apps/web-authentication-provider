@@ -9,8 +9,6 @@ block main
     section
         +flash()
 
-
-
         if req.user
             p Hello #{req.user.username}.  You are currently logged in.  Would you like to #[a(href='/logout') logout]?
         else

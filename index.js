@@ -25,7 +25,7 @@ const consumerHandler = require('./handlers/consumer')
 
     const db = (await MongoClient.connect(config.get('mongo.uri'), { useNewUrlParser: true })).db(config.get('mongo.db'))
     mongoose.connect(config.get('mongo.uri') + config.get('mongo.db'), { useNewUrlParser: true })
-    mongoose.set("useCreateIndex", true)
+    mongoose.set('useCreateIndex', true)
 
     app.set('view engine', 'pug')
 
@@ -83,30 +83,39 @@ const consumerHandler = require('./handlers/consumer')
         res.redirect('/api/' + req.path.split('/').slice(3, req.path.length).join('/'))
     })
 
-    app.get('/', (req, res) => res.render('home'))
-    app.get('/login', (req, res) => res.render('login'))
-    app.get('/register', (req, res) => res.render('login'))
     app.get('/logout', login.getLogout)
-
-    app.post('/login', login.postLogin)
-    app.post('/register', login.postRegister)
 
     app.get('/api/consumer', consumerHandler.getConsumers)
     app.get('/api/consumer/:consumerId', consumerHandler.getConsumer)
     app.post('/api/consumer', consumerHandler.postConsumer)
     app.put('/api/consumer/:consumerId', consumerHandler.putConsumer)
     app.delete('/api/consumer/:consumerId', consumerHandler.deleteConsumer)
+    app.get('/api/auth', login.isAuthenticated, foreign.getAuth)
 
-    app.get('/consumers', async (req, res) => {
-        res.render('consumers', {
-            page: { title: `Consumer List :: ${config.get('title.suffix')}` },
+    app.get('/', (req, res) => {
+        res.render('home', {
+            page: { title: `Home :: ${config.get('title.suffix')}` }
+        })
+    })
+
+    app.get('/consumer/list', async (req, res) => {
+        res.render('listConsumers', {
+            page: { title: `List Consumers :: ${config.get('title.suffix')}` },
             consumers: await consumerServices.readConsumers()
         })
     })
 
-    app.get('/api/auth', login.isAuthenticated, foreign.getAuth)
+    app.get('/consumer/add', async (req, res) => {
+        res.render('addConsumer', {
+            page: { title: `Add Consumer :: ${config.get('title.suffix')}` }
+        })
+    })
 
-    app.get('/admin', (req, res) => res.sendStatus(501))
+    app.get(['/login', '/register'], (req, res) => {
+        res.render('login', {
+            page: { title: `Login / Register :: ${config.get('title.suffix')}` }
+        })
+    })
 
     reload(app)
 

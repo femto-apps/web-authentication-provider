@@ -1,4 +1,4 @@
-const { verify } = require('@femto-apps/verify')
+
 const { normalise } = require('@femto-apps/normaliser')
 const Errors = require('@femto-apps/errors')('../errors.json')
 

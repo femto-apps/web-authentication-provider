@@ -10,5 +10,9 @@
     "ERR_CONSUMER_SECRET_FIND": {
         "msg": "Unable to find any consumers with secret '{secret}' at path '{path}'",
         "code": 400
+    },
+    "ERR_USER_FIND": {
+        "msg": "Unable to find any users with the username '{username}'.'",
+        "code": 400
     }
 }

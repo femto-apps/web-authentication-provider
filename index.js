@@ -17,6 +17,7 @@ const login = require('./modules/login')
 const consumerServices = require('./services/consumer')
 
 const consumerHandler = require('./handlers/consumer')
+const userHandler = require('./handlers/user')
 
 
 ;(async () => {
@@ -95,6 +96,10 @@ const consumerHandler = require('./handlers/consumer')
     app.post('/api/consumer', consumerHandler.postConsumer)
     app.put('/api/consumer/:consumerId', consumerHandler.putConsumer)
     app.delete('/api/consumer/:consumerId', consumerHandler.deleteConsumer)
+
+    app.get('/api/user', userHandler.getUser)
+    app.get('/api/user/:username', userHandler.getUsers)
+
     app.get('/api/auth', login.isAuthenticated, foreign.getAuth)
     app.get('/api/verify', (req, res) => res.sendStatus(410))
 

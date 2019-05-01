@@ -64,6 +64,13 @@ exports.init = function(app) {
 }
 
 exports.isAuthenticated = function(req, res, next) {
+    if (req.query.multi) {
+        if (req.query.multi.toLowerCase() == "true") {
+            req.query.multi = "false"
+            res.redirect(appendQuery('/login', 'goto=' + encodeURIComponent(req.originalUrl)))
+        }
+    }
+
     if (req.user) return next()
 
     res.redirect(appendQuery('/login', 'goto=' + encodeURIComponent(req.originalUrl)))

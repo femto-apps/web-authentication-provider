@@ -11,27 +11,27 @@ block main
             h3 Login
 
             fieldset
-                input(type='hidden', name='goto', value=req.query.goto)
+                input(type='hidden', name='goto', value=req.query.goto)#goto-login
 
-                label(for='username') Username
-                input(type='text', name='username', placeholder='username' autocorrect='off', spellcheck='false', autocapitalize='off', autofocus='true')#username
+                label(for='username')#username-label-login Username
+                input(type='text', name='username', placeholder='username' autocorrect='off', spellcheck='false', autocapitalize='off', autofocus='true')#username-login
 
-                label(for='password') Password
-                input(type='password', name='password')#password
+                label(for='password')#password-label-login Password
+                input(type='password', name='password')#password-login
 
-                input(type='submit', value='login').button-outline
+                input(type='submit', value='login')#submit-login.button-outline
 
         form(action='/register', method='post')
 
             h3 Register
 
             fieldset
-                input(type='hidden', name='goto', value=req.query.goto)
+                input(type='hidden', name='goto', value=req.query.goto)#goto-register
 
-                label(for='username') Username
-                input(type='text', name='username', placeholder='username' autocorrect='off', spellcheck='false', autocapitalize='off', autofocus='true')#username
+                label(for='username')#username-label-register Username
+                input(type='text', name='username', placeholder='username' autocorrect='off', spellcheck='false', autocapitalize='off', autofocus='true')#username-register
 
-                label(for='password') Password
-                input(type='password', name='password')#password
+                label(for='password')#password-label-register Password
+                input(type='password', name='password')#password-register
 
-                input(type='submit', value='register').button-outline
+                input(type='submit', value='register')#submit-register.button-outline

@@ -76,8 +76,9 @@ const consumerHandler = require('./handlers/consumer')
         next()
     })
 
+    app.all('/api', (req, res) => res.json("This is the API route"))
     app.all('/api/v1', (req, res) => res.json("This is the version 1 API route"))
-    app.all('/api/v1*', (req, res, next) => {
+    app.all('/api/v1/*', (req, res, next) => {
         console.log(req.path.split('/').splice(0, 3))
         res.redirect('/api/' + req.path.split('/').slice(3, req.path.length).join('/'))
     })
@@ -94,6 +95,7 @@ const consumerHandler = require('./handlers/consumer')
     app.put('/api/consumer/:consumerId', consumerHandler.putConsumer)
     app.delete('/api/consumer/:consumerId', consumerHandler.deleteConsumer)
     app.get('/api/auth', login.isAuthenticated, foreign.getAuth)
+    app.get('/api/verify', (req, res) => res.sendStatus(410))
 
     app.get('/', (req, res) => {
         res.render('home', {
@@ -114,7 +116,7 @@ const consumerHandler = require('./handlers/consumer')
         })
     })
 
-    app.get(['/login', '/register'], (req, res) => {
+    app.get(['/login', '/register', '/forgot'], (req, res) => {
         res.render('login', {
             page: { title: `Login / Register :: ${config.get('title.suffix')}` }
         })

@@ -128,6 +128,7 @@ async function logout(req, res, to) {
 
     if ('tokens' in req.session) {
         const tokens = req.session.tokens.map(token => `${config.get('redis.session')}:${token.token}`).join(' ')
+
         await delAsync(tokens)
         req.session.tokens = undefined
     }

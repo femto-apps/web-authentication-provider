@@ -13,6 +13,7 @@
 ## Desired
 - Realm support
 - Multiple users logged in at once 
+	- Re-implement passport 
 - Storing other details about users
 
 

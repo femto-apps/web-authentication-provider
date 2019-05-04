@@ -6,6 +6,8 @@
 - Documentation 
 - Login redirects
 - Authorisation server integration 
+- Fix tokens not being cleared 
+- Reset password 
 
 
 ## Desired

@@ -11,7 +11,7 @@
   "author": "[Popey456963, aappleton8]",
   "license": "MIT",
   "dependencies": {
-    "@femto-apps/config": "^1.0.0",
+    "@femto-apps/config": "^3.0.1",
     "@femto-apps/errors": "^2.0.0",
     "@femto-apps/normaliser": "^1.0.0",
     "@femto-apps/verify": "^1.0.3",

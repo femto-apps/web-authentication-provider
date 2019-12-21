@@ -1,114 +1,58 @@
 const mongoose = require('mongoose')
+const config = require('@femto-apps/config')
 
 const User = require('../models/User')
+const FileUploaderUser = require('../../web-file-uploader/models/User')
 
-mongoose.connect(config.get('mongo.uri') + config.get('mongo.db'), {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
+// mongoose.connect(config.get('mongo.uri') + config.get('mongo.db'), {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//     useFindAndModify: false,
+//     useCreateIndex: true
+// })
+
+mongoose.connect(config.get('mongo.uri') + 'fileUploader', {
+    // useNewUrlParser: true,
+    // useFindAndModify: false,
+    // useCreateIndex: true
 })
+
+// DISABLE HASHING BEFORE RUNNING THIS SCRIPT.
 
 async function convertUser(original) {
     console.log('original', original)
 
-    const originalName = original.name.original
-    const extension = originalName.slice((originalName.lastIndexOf(".") - 1 >>> 0) + 2)
+    // const user = new User({
+    //     _id: original._id,
+    //     username: original.username,
+    //     password: original.password,
+    //     createdAt: original.createdAt,
+    //     updatedAt: original.updatedAt
+    // })
 
-    console.log('grabbing data stream')
-    // download file and reupload it to minio
-    const dataStream = await fetch('https://v2.femto.pw/dvnb')
-        .then(res => res.body)
+    console.log(config.get('mongo.uri') + 'fileUploader')
 
-    console.log(dataStream)
-
-    console.log('finished fetch')
-
-    const bucket = 'items'
-
-    console.log('start folder')
-    const folder = (await newCollection.fromReq({
-        user: original.user._id ? new newUser({ _id: original.user._id }) : undefined,
-        ip: original.user.ip
-    })).path
-    console.log('end folder')
-
-    const filename = uuidv4()
-    const filepath = path.posix.join(folder, filename)
-
-    console.log('got body')
-
-    await client.putObject(bucket, filepath, dataStream, undefined)
-
-    console.log('put object')
-
-    const store = await newStore.create({
-        bucket, folder, filename, filepath, store: 'minio'
-    })
-    const bytes = (await toArray(await store.getStream({ end: 2048, start: 0 })))[0]
-
-    console.log(bytes)
-
-    const { data } = await Types.detect(store, bytes, {
-        mimetype: original.file.mime,
-        encoding: original.file.encoding
+    const fileUser = new FileUploaderUser({
+        user: original._id,
+        createdAt: original.createdAt,
+        updatedAt: original.updatedAt,
+        apiKey: original.apiKey
     })
 
-    console.log('detected type')
+    console.log('created file uploader')
 
-    const item = await newItemModel.create({
-        name: {
-            original: originalName,
-            extension: extension,
-            filename: originalName.replace(/\.[^/.]+$/, '')
-        },
-        metadata: {
-            createdAt: original.createdAt,
-            updatedAt: original.updatedAt,
-            mime: original.file.mime,
-            encoding: original.file.encoding,
-            filetype: data.filetype,
-            views: original.views
-        },
-        references: {
-            storage: store.store
-        },
-        user: { _id: original.user._id, ip: original.user.ip }
-    })
+    // await user.save()
+    await fileUser.save()
 
-    console.log('created item')
-
-    const shortItem = await newShort.createReference(original.name.short, item.item)
-    await item.setCanonical(shortItem)
-
-    console.log(item)
-    console.log(shortItem)
+    console.log('finished')
 }
 
 convertUser({
-    "_id": "5bacf2599ddbd30eec206b81",
-    "name": {
-        "short": "ccjpa3",
-        "extension": "png",
-        "original": "chrome_2018-09-27_16-08-09.png"
-    },
-    "storage": {
-        "store": "C:\\Users\\Alexander\\Documents\\GitHub\\minimal_design\\sites\\host\\store",
-        "filename": "91e893fc-c3e6-48ba-b731-869f8a1e8e3d"
-    },
-    "file": {
-        "encoding": "7bit",
-        "mime": "image/png",
-        "length": 43996,
-        "filetype": "image"
-    },
-    "user": {
-        "loggedIn": "anonymous",
-        "ip": "::1"
-    },
-    "version": 2,
-    "views": 1,
-    "createdAt": "2018-09-27T15:08:09.901Z",
-    "updatedAt": "2018-09-27T15:08:16.211Z",
+    "_id": "5b41127aa1fe2d0534e856ad",
+    "username": "popey545@debenclipper.com",
+    "password": "$2a$12$7jWFan7fGdECjd1FJc0jr.uhNtJejm/wV6.VSt6f1CBvo.7c9/w5u",
+    "createdAt": "2018-07-07T19:20:26.735Z",
+    "updatedAt": "2018-07-07T19:20:26.735Z",
+    "apiKey": "5c8ac325-b644-4a5a-ac68-29140fea44a9",
     "__v": 0
 })

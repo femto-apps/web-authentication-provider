@@ -16,15 +16,15 @@ const UserSchema = mongoose.Schema({
     }
 })
 
-UserSchema.pre('save', function (next) {
-    if (!this.isModified('password')) return next()
+// UserSchema.pre('save', function (next) {
+//     if (!this.isModified('password')) return next()
 
-    bcrypt.hash(this.password, 12, (err, hash) => {
-        if (err) return next('An unknown error occurred whilst hashing your password, sorry.')
-        this.password = hash
-        next()
-    })
-})
+//     bcrypt.hash(this.password, 12, (err, hash) => {
+//         if (err) return next('An unknown error occurred whilst hashing your password, sorry.')
+//         this.password = hash
+//         next()
+//     })
+// })
 
 UserSchema.methods.compare = function (password, cb) {
     return bcrypt.compare(password, this.password)

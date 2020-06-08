@@ -2,7 +2,6 @@ const expressSession = require('express-session')
 const cookieParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')(expressSession)
 const bodyParser = require('body-parser')
-const MongoClient = require('mongodb').MongoClient
 const flash = require('express-flash')
 const mongoose = require('mongoose')
 const express = require('express')
@@ -23,8 +22,7 @@ const userHandler = require('./handlers/user')
     const app = express()
     const port = config.get('port')
 
-    const db = (await MongoClient.connect(config.get('mongo.uri'), { useNewUrlParser: true })).db(config.get('mongo.db'))
-    mongoose.connect(config.get('mongo.uri') + config.get('mongo.db'), { useNewUrlParser: true })
+    mongoose.connect(config.get('mongo.uri') + config.get('mongo.db'), { useNewUrlParser: true, useUnifiedTopology: true })
     mongoose.set('useCreateIndex', true)
 
     app.set('view engine', 'pug')
@@ -37,7 +35,10 @@ const userHandler = require('./handlers/user')
         secret: config.get('session.secret') || 'super_secret_123',
         resave: false,
         saveUninitialized: false,
-        store: new MongoStore({ db }),
+        store: new MongoStore({
+            mongooseConnection: mongoose.connection,
+            collection: 'session',
+        }),
         name: config.get('cookie.name'),
         cookie: {
             maxAge: config.get('cookie.maxAge'),

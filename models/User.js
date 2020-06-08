@@ -31,3 +31,4 @@ UserSchema.methods.compare = function (password, cb) {
 }
 
 module.exports = mongoose.model('User', UserSchema)
+module.exports.schema = UserSchema

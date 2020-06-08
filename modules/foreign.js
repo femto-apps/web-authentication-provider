@@ -1,6 +1,6 @@
 const { promisify } = require('util')
 const redis = require('redis')
-const uuidv4 = require('uuid/v4')
+const { v4: uuidv4 } = require('uuid')
 const appendQuery = require('append-query')
 const config = require('@femto-apps/config')
 const normUrl = require('normalize-url')

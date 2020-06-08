@@ -1,36 +1,50 @@
 const mongoose = require('mongoose')
 const config = require('@femto-apps/config')
 
-const User = require('../models/User')
-const FileUploaderUser = require('../../web-file-uploader/models/User')
+const UserSchema = require('../models/User').schema
+const FileUploaderUserSchema = require('../../web-file-uploader/models/User').schema
 
-// mongoose.connect(config.get('mongo.uri') + config.get('mongo.db'), {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     useFindAndModify: false,
-//     useCreateIndex: true
-// })
+// DISABLE HASHING BEFORE RUNNING THIS SCRIPT
 
-mongoose.connect(config.get('mongo.uri') + 'fileUploader', {
-    // useNewUrlParser: true,
-    // useFindAndModify: false,
-    // useCreateIndex: true
+const userConnection = mongoose.createConnection(config.get('mongo.uri') + config.get('mongo.db'), {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
 })
 
-// DISABLE HASHING BEFORE RUNNING THIS SCRIPT.
+const fileUserConnection = mongoose.createConnection(config.get('mongo.uri') + 'fileUploader', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+})
+
+const minimalUserConnection = mongoose.createConnection(config.get('mongo.uri') + 'minimal_design', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+})
+
+const User = userConnection.model('User', UserSchema)
+const FileUploaderUser = fileUserConnection.model('User', FileUploaderUserSchema)
+const MinimalUser = minimalUserConnection.model('User', {
+    username: { type: String, required: true, index: { unique: true } },
+    password: { type: String, required: true },
+    apiKey: { type: String }
+})
 
 async function convertUser(original) {
-    console.log('original', original)
+    console.log('handling', original._id)
 
-    // const user = new User({
-    //     _id: original._id,
-    //     username: original.username,
-    //     password: original.password,
-    //     createdAt: original.createdAt,
-    //     updatedAt: original.updatedAt
-    // })
-
-    console.log(config.get('mongo.uri') + 'fileUploader')
+    const user = new User({
+        _id: original._id,
+        username: original.username,
+        password: original.password,
+        createdAt: original.createdAt,
+        updatedAt: original.updatedAt
+    })
 
     const fileUser = new FileUploaderUser({
         user: original._id,
@@ -39,20 +53,38 @@ async function convertUser(original) {
         apiKey: original.apiKey
     })
 
-    console.log('created file uploader')
+    console.log('saving user')
 
-    // await user.save()
-    await fileUser.save()
+    try {
+        await user.save()
+    } catch(e) {
+        if (e.code !== 11000) throw e
+    }
+
+    console.log('finished svaing user')
+    console.log('saving file uploader user')
+
+    try {
+        await user.save()
+    } catch(e) {
+        if (e.code !== 11000) throw e
+    }
+
+    try {
+        await fileUser.save()
+    } catch(e) {
+        if (e.code !== 11000) throw e
+    }
 
     console.log('finished')
 }
 
-convertUser({
-    "_id": "5b41127aa1fe2d0534e856ad",
-    "username": "popey545@debenclipper.com",
-    "password": "$2a$12$7jWFan7fGdECjd1FJc0jr.uhNtJejm/wV6.VSt6f1CBvo.7c9/w5u",
-    "createdAt": "2018-07-07T19:20:26.735Z",
-    "updatedAt": "2018-07-07T19:20:26.735Z",
-    "apiKey": "5c8ac325-b644-4a5a-ac68-29140fea44a9",
-    "__v": 0
-})
+async function init() {
+    const users = await MinimalUser.find()
+
+    for (let user of users) {
+        await convertUser(user)
+    }
+}
+
+init()

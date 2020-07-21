@@ -15,3 +15,16 @@ async function readUser(username) {
     return user
 }
 
+async function readUserById(id) {
+    const user = await User.findOne({ _id: id })
+        .catch(err => {
+            throw Errors('ERROR_USER_FIND_BY_ID', { idd, err })
+        })
+
+    return user
+}
+
+module.exports = {
+    readUser,
+    readUserById
+}

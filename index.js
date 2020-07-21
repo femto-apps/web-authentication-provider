@@ -97,8 +97,9 @@ const userHandler = require('./handlers/user')
     app.put('/api/consumer/:consumerId', consumerHandler.putConsumer)
     app.delete('/api/consumer/:consumerId', consumerHandler.deleteConsumer)
 
-    app.get('/api/user', userHandler.getUser)
-    app.get('/api/user/:username', userHandler.getUsers)
+    app.get('/api/user', userHandler.getUsers)
+    app.get('/api/user/:username', userHandler.getUser)
+    app.get('/api/user/id/:id', userHandler.getUserById)
 
     app.get('/api/auth', login.isAuthenticated, foreign.getAuth)
     app.get('/api/verify', (req, res) => res.sendStatus(410))

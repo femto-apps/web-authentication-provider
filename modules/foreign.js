@@ -33,8 +33,9 @@ exports.getAuth = async function(req, res) {
         return res.json({ err: 'Cannot Parse Redirect URL' })
     }
     
-    let origUrl = normUrl(url.origin)
-    if (redirects.indexOf(origUrl) == -1) {
+    try {
+        let origUrl = normUrl(url.origin)
+    } catch(e) {
         return res.json({ err: 'Unacceptable Redirect' })
     }
 

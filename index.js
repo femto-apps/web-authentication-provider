@@ -129,7 +129,7 @@ const userHandler = require('./handlers/user')
             }
 
             res.render('changePassword', {
-                page: { title: `Login / Register :: ${config.get('title.suffix')}` }
+                page: { title: `Change Password :: ${config.get('title.suffix')}` }
             })
         })
 

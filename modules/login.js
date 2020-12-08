@@ -11,7 +11,9 @@ const config = require('@femto-apps/config')
 
 const User = require('../models/User')
 
-const client = redis.createClient()
+const redisHost = config.get('redis.host')
+const redisPort = config.get('redis.port')
+const client = redis.createClient(redisPort, redisHost)
 const delAsync = promisify(client.del).bind(client)
 
 client.on('error', err => {

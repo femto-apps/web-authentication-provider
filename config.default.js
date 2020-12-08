@@ -5,7 +5,9 @@ module.exports = {
     db: 'authenticationProvider'
   },
   redis: {
-    session: 'sessions'
+    host: '127.0.0.1',
+    port: 6379,
+	session: 'sessions'
   },
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7 * 4, // 28 days

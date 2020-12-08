@@ -7,7 +7,8 @@ const normUrl = require('normalize-url')
 
 const consumerService = require('../services/consumer')
 
-const client = redis.createClient()
+const redisURL = config.get('redis.url') || 'redis://127.0.0.1:6379/0'
+const client = redis.createClient(redisURL)
 const setAsync = promisify(client.set).bind(client)
 
 client.on('error', err => {

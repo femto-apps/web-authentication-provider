@@ -5,10 +5,10 @@ module.exports = {
     db: 'authenticationProvider'
   },
   redis: {
-    // url: 'redis://192.168.207.201:6379/7',
-    host: '192.168.207.201',
+    // url: 'redis://127.0.0.1:6379/0',
+    host: '127.0.0.1',
     port: 6379,
-    db: 7,
+    db: 0,
     session: 'sessions'
   },
   cookie: {

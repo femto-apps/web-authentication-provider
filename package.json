@@ -14,7 +14,7 @@
     "@femto-apps/config": "^3.0.1",
     "@femto-apps/errors": "^2.0.0",
     "@femto-apps/normaliser": "^1.0.0",
-    "@femto-apps/verify": "^1.0.3",
+    "@femto-apps/verify": "1.0.4",
     "append-query": "^2.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
